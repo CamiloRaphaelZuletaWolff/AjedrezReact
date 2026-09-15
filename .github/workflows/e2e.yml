@@ -1,0 +1,56 @@
+# Workflow 2 de 3.
+# Proposito: ejecutar las pruebas end-to-end (Cypress) en modo headless
+# contra la aplicacion completa: Express sirviendo el frontend compilado.
+# Resultado verificable: la lista de pruebas pasadas o falladas en el log,
+# mas las capturas de pantalla si algo falla.
+name: Pruebas E2E
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar Cypress
+        run: npm ci
+
+      - name: Instalar backend y frontend
+        run: npm run instalar
+
+      - name: Construir la aplicacion
+        run: npm run build
+
+      - name: Iniciar el servidor y esperar a que responda
+        run: |
+          npm start &
+          for intento in $(seq 1 30); do
+            if curl -sf http://localhost:3000 > /dev/null; then
+              echo "Servidor listo"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "El servidor no respondio a tiempo"
+          exit 1
+
+      - name: Ejecutar Cypress en Chrome headless
+        run: npx cypress run --browser chrome
+
+      - name: Guardar capturas si algo fallo
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-cypress
+          path: cypress/screenshots
+          if-no-files-found: ignore

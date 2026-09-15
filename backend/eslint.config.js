@@ -1,0 +1,17 @@
+// Reglas de ESLint para el backend.
+// "npm run lint" falla si hay errores, y eso hace fallar la GitHub Action de linting.
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import { defineConfig, globalIgnores } from "eslint/config";
+
+export default defineConfig([
+    globalIgnores(["dist"]),
+    {
+        files: ["**/*.ts"],
+        extends: [js.configs.recommended, tseslint.configs.recommended],
+        languageOptions: {
+            globals: globals.node
+        }
+    }
+]);

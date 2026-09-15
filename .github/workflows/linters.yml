@@ -1,0 +1,46 @@
+# Workflow 1 de 3.
+# Proposito: revisar la calidad del codigo con ESLint y TypeScript.
+# Resultado verificable: si ESLint o el compilador encuentran un error,
+# el workflow falla y se ve en rojo en la pestana Actions.
+name: Linters
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias del backend
+        run: npm ci
+        working-directory: backend
+
+      - name: Instalar dependencias del frontend
+        run: npm ci
+        working-directory: frontend
+
+      - name: ESLint del backend
+        run: npm run lint
+        working-directory: backend
+
+      - name: ESLint del frontend
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Compilar TypeScript del backend
+        run: npm run build
+        working-directory: backend
+
+      - name: Compilar TypeScript y Vite del frontend
+        run: npm run build
+        working-directory: frontend

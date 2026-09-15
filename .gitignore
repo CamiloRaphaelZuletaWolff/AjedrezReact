@@ -1,0 +1,26 @@
+# Dependencias: se reinstalan con "npm run instalar".
+node_modules/
+
+# Compilados: los genera "npm run build" (frontend/dist y backend/dist).
+# Render los construye solo, por eso no se suben al repositorio.
+dist/
+*.tsbuildinfo
+
+# Resultados de las pruebas E2E.
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+
+# Variables de entorno: nunca subir secretos (como el deploy hook de Render).
+.env
+.env.*
+
+# Logs.
+*.log
+npm-debug.log*
+
+# Archivos del sistema operativo y de los editores.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

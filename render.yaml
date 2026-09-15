@@ -1,0 +1,13 @@
+# Configuracion del servicio web en Render (Blueprint).
+# Tambien se puede crear el servicio a mano en render.com con estos mismos datos.
+services:
+  - type: web
+    name: ajedrez-relampago
+    runtime: node
+    plan: free
+    buildCommand: npm run instalar && npm run build
+    startCommand: npm start
+    envVars:
+      # Render asigna el puerto automaticamente; el servidor lee process.env.PORT.
+      - key: NODE_VERSION
+        value: 22

@@ -1,0 +1,25 @@
+{
+  "name": "ajedrez-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.5.0",
+    "eslint": "^10.9.0",
+    "globals": "^17.11.0",
+    "tsx": "^4.23.13",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.67.0"
+  }
+}

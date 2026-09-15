@@ -1,0 +1,24 @@
+{
+  "name": "ajedrez-relampago",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Juego de ajedrez por turnos con energia y misiones. React + Express.",
+  "scripts": {
+    "instalar:backend": "cd backend && npm install",
+    "instalar:frontend": "cd frontend && npm install",
+    "instalar": "npm run instalar:backend && npm run instalar:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "start": "node backend/dist/server.js",
+    "e2e": "cypress run --browser chrome",
+    "e2e:visual": "cypress open --e2e --browser chrome"
+  },
+  "devDependencies": {
+    "cypress": "^15.21.1",
+    "typescript": "~6.0.2"
+  }
+}

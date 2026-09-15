@@ -1,0 +1,482 @@
+/* ---------------------------------------------------------------------------
+   estilos.css  -  CSS propio del juego, sin ninguna libreria externa.
+   Estilo pixel art / retro: sin esquinas redondeadas, bordes gruesos,
+   sombras duras sin difuminar y fuente de pixeles.
+   El tablero y los dos paneles ocupan toda la pantalla.
+--------------------------------------------------------------------------- */
+
+:root {
+    --fondo: #10141f;
+    --fondo-tarjeta: #1b2233;
+    --fondo-hueco: #0a0d15;
+    --borde: #4a5b8c;
+    --negro: #05070c;
+    --texto: #e8f0ff;
+    --texto-suave: #8ea2c9;
+    --acento: #ffd23f;
+    --casilla-clara: #e8d8b0;
+    --casilla-oscura: #6b5a3e;
+    --verde: #5dd39e;
+    --rojo: #ff5a5f;
+
+    /* Si la fuente de pixeles no carga, se usa una monoespaciada del sistema
+       y el resto del estilo retro se mantiene igual. */
+    --fuente: "Press Start 2P", "Courier New", monospace;
+
+    /* Sombra dura: sin desenfoque, como en los juegos de 8 bits. */
+    --sombra: 4px 4px 0 var(--negro);
+    --sombra-chica: 3px 3px 0 var(--negro);
+}
+
+* {
+    box-sizing: border-box;
+    /* Nada de esquinas redondeadas en toda la aplicacion. */
+    border-radius: 0;
+}
+
+body {
+    margin: 0;
+    color: var(--texto);
+    font-family: var(--fuente);
+    font-size: 12px;
+    line-height: 1.7;
+    background-color: var(--fondo);
+    /* Rejilla de 8x8 px que da la sensacion de pantalla pixelada. */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 8px 8px;
+}
+
+.pantalla {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Pantalla de inicio --------------------------------------------------- */
+
+.inicio {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px 20px;
+}
+
+.inicio h1 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.4;
+    color: var(--acento);
+    text-align: center;
+    text-shadow: var(--sombra);
+}
+
+.subtitulo {
+    margin: 0 0 18px;
+    font-size: 9px;
+    color: var(--texto-suave);
+    text-align: center;
+}
+
+.inicio-columnas {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+}
+
+.tarjeta {
+    background: var(--fondo-tarjeta);
+    border: 3px solid var(--borde);
+    box-shadow: var(--sombra);
+    padding: 18px;
+    flex: 1 1 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tarjeta h2 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--acento);
+    text-transform: uppercase;
+}
+
+.tarjeta ul {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 9px;
+    line-height: 2;
+    color: var(--texto-suave);
+}
+
+label {
+    font-size: 9px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+input {
+    padding: 10px;
+    border: 3px solid var(--borde);
+    background: var(--fondo-hueco);
+    color: var(--texto);
+    font-family: var(--fuente);
+    font-size: 11px;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--acento);
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--fuente);
+}
+
+/* Boton estilo 8 bits: sombra dura que se "hunde" al apretarlo. */
+.boton-principal {
+    margin-top: 12px;
+    padding: 14px;
+    border: 3px solid var(--negro);
+    background: var(--acento);
+    box-shadow: var(--sombra);
+    color: var(--negro);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.boton-principal:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+.boton-principal:disabled {
+    opacity: 0.6;
+    cursor: default;
+    transform: none;
+    box-shadow: var(--sombra);
+}
+
+/* --- Cabecera ------------------------------------------------------------- */
+
+.cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 12px 20px;
+    border-bottom: 3px solid var(--borde);
+}
+
+.cabecera h1 {
+    margin: 0;
+    font-size: 15px;
+    color: var(--acento);
+    text-shadow: var(--sombra-chica);
+}
+
+.cabecera p {
+    margin: 0;
+    font-size: 9px;
+    color: var(--texto-suave);
+}
+
+.cabecera button {
+    padding: 9px 12px;
+    border: 3px solid var(--borde);
+    background: var(--fondo-tarjeta);
+    box-shadow: var(--sombra-chica);
+    color: var(--texto);
+    font-size: 8px;
+    text-transform: uppercase;
+}
+
+.cabecera button:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+/* --- Mesa de juego: panel | tablero | panel ------------------------------- */
+
+.mesa {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 270px 1fr 270px;
+    gap: 20px;
+    padding: 18px 20px;
+}
+
+.panel {
+    background: var(--fondo-tarjeta);
+    border: 3px solid var(--borde);
+    box-shadow: var(--sombra);
+    padding: 14px;
+    height: fit-content;
+}
+
+.panel-activo {
+    border-color: var(--acento);
+}
+
+.panel h2 {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.panel h3 {
+    margin: 16px 0 8px;
+    font-size: 8px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.etiqueta-color {
+    margin: 4px 0 12px;
+    font-size: 8px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.aviso-turno {
+    margin: 0 0 12px;
+    padding: 8px 4px;
+    border: 3px solid var(--negro);
+    background: var(--acento);
+    box-shadow: var(--sombra-chica);
+    color: var(--negro);
+    font-size: 9px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dato {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+/* Barra de energia dibujada como bloques, no como una barra continua. */
+.barra {
+    height: 14px;
+    padding: 2px;
+    background: var(--fondo-hueco);
+    border: 2px solid var(--borde);
+    margin-bottom: 8px;
+}
+
+.barra-llena {
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--verde) 0 6px,
+        transparent 6px 8px
+    );
+}
+
+.mision {
+    margin: 6px 0 0;
+    font-size: 8px;
+    line-height: 1.9;
+    color: var(--texto-suave);
+}
+
+.costes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 8px;
+    line-height: 2.1;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.costes li {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* --- Centro y tablero ----------------------------------------------------- */
+
+.centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.mensaje {
+    margin: 0;
+    font-size: 9px;
+    line-height: 1.9;
+    text-align: center;
+    color: var(--texto);
+}
+
+.tablero {
+    display: grid;
+    /* Las 8 filas y las 8 columnas se reparten el espacio en partes iguales.
+       Sin grid-template-rows, las filas se ajustarian al contenido y las filas
+       sin piezas quedarian mas bajas que las demas. */
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: min(62vh, 100%);
+    aspect-ratio: 1 / 1;
+    border: 4px solid var(--negro);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.casilla {
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Deja que la casilla se encoja hasta el tamano de su fila/columna
+       en lugar de crecer con la imagen que tiene dentro. */
+    min-width: 0;
+    min-height: 0;
+}
+
+.clara {
+    background: var(--casilla-clara);
+}
+
+.oscura {
+    background: var(--casilla-oscura);
+}
+
+/* Los resaltados son recuadros de pixeles, no bordes suaves. */
+.seleccionada {
+    box-shadow: inset 0 0 0 5px var(--acento);
+}
+
+.destino {
+    box-shadow: inset 0 0 0 5px var(--verde);
+}
+
+.destino-captura {
+    box-shadow: inset 0 0 0 5px var(--rojo);
+}
+
+.pieza {
+    width: 84%;
+    height: 84%;
+    object-fit: contain;
+    /* Las piezas son imagenes pixeladas: se escalan sin difuminarse. */
+    image-rendering: pixelated;
+}
+
+.error {
+    margin: 0;
+    min-height: 26px;
+    font-size: 9px;
+    line-height: 1.9;
+    color: var(--rojo);
+    text-align: center;
+}
+
+.oculto {
+    visibility: hidden;
+}
+
+/* --- Jugadas y resultado -------------------------------------------------- */
+
+.jugadas {
+    padding: 10px 20px 16px;
+    border-top: 3px solid var(--borde);
+    font-size: 8px;
+    line-height: 2;
+    color: var(--texto-suave);
+}
+
+.jugadas strong {
+    text-transform: uppercase;
+}
+
+.jugadas ul {
+    margin: 6px 0 0;
+    padding-left: 16px;
+}
+
+.capa-resultado {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 12, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.resultado {
+    background: var(--fondo-tarjeta);
+    border: 4px solid var(--acento);
+    box-shadow: var(--sombra);
+    padding: 26px;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+}
+
+.resultado h2 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--acento);
+    text-transform: uppercase;
+    text-shadow: var(--sombra-chica);
+}
+
+.resultado p {
+    font-size: 9px;
+    line-height: 1.9;
+}
+
+.resultado h3 {
+    margin: 22px 0 8px;
+    font-size: 9px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+}
+
+.marcador-final {
+    font-size: 12px;
+}
+
+.historial {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 8px;
+    line-height: 2;
+    color: var(--texto-suave);
+}
+
+/* --- Pantallas angostas --------------------------------------------------- */
+
+@media (max-width: 1000px) {
+    .mesa {
+        grid-template-columns: 1fr;
+    }
+
+    .tablero {
+        /* 100% de la columna, nunca del ancho de la ventana: asi no aparece
+           scroll horizontal cuando el navegador muestra su barra lateral. */
+        width: min(100%, 520px);
+    }
+}
