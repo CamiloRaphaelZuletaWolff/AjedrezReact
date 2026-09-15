@@ -15,6 +15,9 @@ cypress/downloads/
 .env
 .env.*
 
+# Notas personales que no forman parte de la entrega (guia de despliegue, etc).
+*.local.md
+
 # Logs.
 *.log
 npm-debug.log*

@@ -4,7 +4,7 @@ Juego de ajedrez por turnos para dos jugadores, con una variante propia: **energ
 **misiones aleatorias**. El frontend esta hecho con React + TypeScript (Vite) y el backend
 con Express + TypeScript. Toda la logica del juego vive en el servidor.
 
-- **Aplicacion publicada:** https://PENDIENTE.onrender.com  *(reemplazar por la URL real de Render)*
+- **Aplicacion publicada:** https://ajedrez-relampago.onrender.com
 - **Documentacion detallada:** carpeta [`docs/`](docs/)
 
 ---
@@ -72,10 +72,10 @@ Para probar la **aplicacion publicada** en lugar de la local:
 
 ```bash
 # PowerShell
-$env:CYPRESS_BASE_URL="https://PENDIENTE.onrender.com"; npm run e2e:visual
+$env:CYPRESS_BASE_URL="https://ajedrez-relampago.onrender.com"; npm run e2e:visual
 
 # bash
-CYPRESS_BASE_URL=https://PENDIENTE.onrender.com npm run e2e:visual
+CYPRESS_BASE_URL=https://ajedrez-relampago.onrender.com npm run e2e:visual
 ```
 
 > **Si Cypress falla con `Cypress.exe: bad option: --smoke-test`**, la terminal tiene

@@ -65,7 +65,7 @@ Para probar la aplicacion **publicada** (lo que se muestra en la defensa):
 
 ```bash
 # PowerShell
-$env:CYPRESS_BASE_URL="https://mi-app.onrender.com"; npm run e2e:visual
+$env:CYPRESS_BASE_URL="https://ajedrez-relampago.onrender.com"; npm run e2e:visual
 ```
 
 Cypress convierte automaticamente cualquier variable `CYPRESS_*` en la opcion de

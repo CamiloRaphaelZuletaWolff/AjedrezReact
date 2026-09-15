@@ -1,6 +1,10 @@
 # Workflow 3 de 3.
 # Proposito: publicar la aplicacion completa (frontend + backend) en Render.
-# Render vuelve a construir el proyecto y lo deja en la URL publica.
+#
+# Es independiente de los otros dos workflows: no los necesita y ellos no lo
+# necesitan a el. Lo unico que hace es avisarle a Render que construya y
+# publique la ultima version. Render tiene autoDeploy desactivado
+# (ver render.yaml), asi que este workflow es el unico que dispara deploys.
 #
 # Requisito: crear el secreto RENDER_DEPLOY_HOOK en
 # GitHub > Settings > Secrets and variables > Actions, con la URL del
@@ -21,6 +25,13 @@ jobs:
 
     steps:
       - name: Pedir a Render que publique la ultima version
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          respuesta=$(curl -sf -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}")
+          if [ -z "$HOOK" ]; then
+            echo "Falta el secreto RENDER_DEPLOY_HOOK en GitHub."
+            echo "Settings > Secrets and variables > Actions > New repository secret"
+            exit 1
+          fi
+          respuesta=$(curl -sf -X POST "$HOOK")
           echo "Respuesta de Render: $respuesta"

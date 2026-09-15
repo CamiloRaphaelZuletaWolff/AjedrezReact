@@ -1,13 +1,29 @@
-# Configuracion del servicio web en Render (Blueprint).
-# Tambien se puede crear el servicio a mano en render.com con estos mismos datos.
+# Blueprint de Render. Con este archivo en el repositorio, Render crea el
+# servicio solo: New > Blueprint > elegir el repo > Apply. No hay que escribir
+# ningun comando a mano en el panel.
 services:
   - type: web
     name: ajedrez-relampago
     runtime: node
     plan: free
+    region: oregon
+    branch: main
+
+    # Render NO publica por su cuenta al hacer push.
+    # El unico que dispara un deploy es el workflow de GitHub Actions
+    # (.github/workflows/deploy.yml), asi no hay dos deploys pisandose.
+    autoDeploy: false
+
+    # Instala backend y frontend, compila Vite y compila TypeScript.
     buildCommand: npm run instalar && npm run build
+    # Levanta Express, que sirve la API y el frontend compilado.
     startCommand: npm start
+
+    # Render considera el servicio "vivo" cuando esta ruta responde 200.
+    healthCheckPath: /api/historial
+
     envVars:
-      # Render asigna el puerto automaticamente; el servidor lee process.env.PORT.
       - key: NODE_VERSION
-        value: 22
+        value: "22"
+      # PORT lo asigna Render automaticamente y el servidor lo lee con
+      # process.env.PORT, por eso no hace falta declararlo aqui.
