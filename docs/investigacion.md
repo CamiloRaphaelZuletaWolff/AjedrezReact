@@ -7,12 +7,24 @@
 | Herramienta | A favor | En contra |
 | --- | --- | --- |
 | **Cypress** | Se instala con un solo paquete; trae interfaz grafica que muestra cada paso; `cy.intercept` permite comprobar las llamadas HTTP reales; mucha documentacion en espanol. | El binario pesa mucho (~700 MB descomprimido); solo navegadores basados en Chromium y Firefox. |
-| **Playwright** | Mas rapido, soporta mas navegadores, viene de Microsoft. | Su API es mas grande y para este proyecto no hacia falta probar varios navegadores. |
+| **Playwright** | Mas rapido; no descarga navegador si se usa el Chrome ya instalado (`channel: "chrome"`); puede compilar y levantar la aplicacion solo con la opcion `webServer`; las esperas son automaticas. | No trae una interfaz grafica tan comoda como la de Cypress para seguir los pasos durante la defensa. |
 | **Selenium** | Es el estandar historico. | Configuracion mas pesada (drivers aparte) y no aporta nada extra aqui. |
 
-**Se eligio Cypress** porque el enunciado pide ejecutar las pruebas *visualmente en Chrome*
-durante la defensa, y `cypress open` hace exactamente eso: se ve el navegador, la lista de
-pasos a la izquierda y se puede retroceder en el tiempo para revisar cada clic.
+**Se implementaron las dos**, Cypress y Playwright, con las mismas pruebas:
+
+- `cypress/e2e/partida.cy.ts`
+- `playwright/partida.spec.ts`
+
+**Cypress es la herramienta principal** y es la que corre en GitHub Actions, porque el
+enunciado pide ejecutar las pruebas *visualmente en Chrome* durante la defensa y
+`cypress open` hace exactamente eso: se ve el navegador, la lista de pasos a la izquierda y
+se puede retroceder en el tiempo para revisar cada clic.
+
+**Playwright quedo como alternativa equivalente**, por dos motivos. El primero es de
+investigacion: sirve para comparar las dos herramientas sobre el mismo caso real. El
+segundo es practico: durante el desarrollo Cypress fallo por una variable de entorno del
+editor (ver limitaciones mas abajo), asi que tener una segunda herramienta que prueba
+exactamente lo mismo evita quedarse sin pruebas si una falla el dia de la defensa.
 
 ### Fuentes consultadas
 
@@ -51,6 +63,8 @@ que si el backend dejara de participar, fallarian.
 
 ### Como se ejecutan localmente
 
+Con Cypress hay que levantar el servidor aparte:
+
 ```bash
 # 1. construir y levantar la aplicacion completa
 npm run build
@@ -61,11 +75,22 @@ npm run e2e          # headless, igual que en GitHub Actions
 npm run e2e:visual   # abre Chrome y se ven las pruebas correr
 ```
 
+Con Playwright no hace falta: la opcion `webServer` de `playwright.config.ts` compila y
+levanta la aplicacion sola, y la reutiliza si ya estaba corriendo.
+
+```bash
+npm run e2e:pw          # headless
+npm run e2e:pw:visual   # viendo Chrome
+```
+
 Para probar la aplicacion **publicada** (lo que se muestra en la defensa):
 
 ```bash
-# PowerShell
+# PowerShell, con Cypress
 $env:CYPRESS_BASE_URL="https://ajedrez-relampago.onrender.com"; npm run e2e:visual
+
+# PowerShell, con Playwright
+$env:PLAYWRIGHT_BASE_URL="https://ajedrez-relampago.onrender.com"; npm run e2e:pw:visual
 ```
 
 Cypress convierte automaticamente cualquier variable `CYPRESS_*` en la opcion de

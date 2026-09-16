@@ -10,6 +10,10 @@ dist/
 cypress/screenshots/
 cypress/videos/
 cypress/downloads/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 
 # Variables de entorno: nunca subir secretos (como el deploy hook de Render).
 .env

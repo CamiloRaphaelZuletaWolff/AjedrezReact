@@ -15,9 +15,12 @@
     "build": "npm run build:frontend && npm run build:backend",
     "start": "node backend/dist/server.js",
     "e2e": "cypress run --browser chrome",
-    "e2e:visual": "cypress open --e2e --browser chrome"
+    "e2e:visual": "cypress open --e2e --browser chrome",
+    "e2e:pw": "playwright test",
+    "e2e:pw:visual": "playwright test --headed"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "cypress": "^15.21.1",
     "typescript": "~6.0.2"
   }

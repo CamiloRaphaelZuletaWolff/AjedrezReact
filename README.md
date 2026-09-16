@@ -32,6 +32,8 @@ npm run instalar     # instala las dependencias de backend/ y frontend/
 | `npm start` | Levanta Express en el puerto 3000 sirviendo el juego completo. |
 | `npm run e2e` | Ejecuta Cypress en modo headless (Chrome). |
 | `npm run e2e:visual` | Abre Cypress para ver las pruebas correr en Chrome. |
+| `npm run e2e:pw` | Ejecuta las mismas pruebas con Playwright, headless. |
+| `npm run e2e:pw:visual` | Ejecuta las mismas pruebas con Playwright, viendo Chrome. |
 
 ### Jugar en local (modo produccion, un solo puerto)
 
@@ -82,6 +84,33 @@ CYPRESS_BASE_URL=https://ajedrez-relampago.onrender.com npm run e2e:visual
 > definida la variable `ELECTRON_RUN_AS_NODE` (pasa en las terminales integradas de algunos
 > editores). Usar una terminal normal de Windows, o borrarla antes:
 > `Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue`
+
+#### Las mismas pruebas con Playwright
+
+El proyecto trae las dos herramientas. `playwright/partida.spec.ts` comprueba exactamente
+lo mismo que `cypress/e2e/partida.cy.ts`, asi que se puede usar cualquiera de las dos.
+
+```bash
+npm run e2e:pw          # headless
+npm run e2e:pw:visual   # viendo Chrome
+```
+
+No hace falta levantar el servidor a mano: Playwright compila y arranca la aplicacion solo
+(y la reutiliza si ya la tenias corriendo). Tampoco descarga ningun navegador, porque usa
+el Chrome que ya esta instalado.
+
+Contra la aplicacion publicada:
+
+```bash
+# PowerShell
+$env:PLAYWRIGHT_BASE_URL="https://ajedrez-relampago.onrender.com"; npm run e2e:pw:visual
+
+# bash
+PLAYWRIGHT_BASE_URL=https://ajedrez-relampago.onrender.com npm run e2e:pw:visual
+```
+
+En GitHub Actions corre Cypress. Playwright esta como alternativa equivalente para
+ejecutar en local.
 
 ---
 

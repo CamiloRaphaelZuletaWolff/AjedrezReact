@@ -14,7 +14,7 @@ function Inicio({ onEmpezar, cargando }: Props) {
 
     return (
         <div className="inicio">
-            <h1>Ajedrez Relampago</h1>
+            <h1>Ajedrez Blitz</h1>
             <p className="subtitulo">Ajedrez para dos jugadores en el mismo teclado, con energia y misiones.</p>
 
             <div className="inicio-columnas">
